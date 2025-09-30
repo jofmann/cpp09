@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:41:06 by phhofman          #+#    #+#             */
-/*   Updated: 2025/09/19 17:37:58 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:33:57 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ bool check_extension(const std::string &filename, const std::string &extension)
     return std::equal(extension.rbegin(), extension.rend(), filename.rbegin());
 }
 
-void printMap(const std::map<std::string, std::string> &m)
+void printMap(const std::map<std::string, float> &map)
 {
     int i = 0;
-    for (const auto &[key, value] : m)
+    for (auto it = map.begin(); it != map.end(); it++)
     {
         if (i == 20)
             break;
-        std::cout << key << " : " << value << std::endl;
+        std::cout << it->first << " | " << it->second << std::endl;
         i++;
     }
 }
