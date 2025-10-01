@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:41:06 by phhofman          #+#    #+#             */
-/*   Updated: 2025/09/30 16:33:57 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:02:44 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <fstream>
 #include <list>
 #include "db.hpp"
+#include "utils.hpp"
 
 bool check_extension(const std::string &filename, const std::string &extension)
 {
@@ -23,18 +24,6 @@ bool check_extension(const std::string &filename, const std::string &extension)
         return false;
 
     return std::equal(extension.rbegin(), extension.rend(), filename.rbegin());
-}
-
-void printMap(const std::map<std::string, float> &map)
-{
-    int i = 0;
-    for (auto it = map.begin(); it != map.end(); it++)
-    {
-        if (i == 20)
-            break;
-        std::cout << it->first << " | " << it->second << std::endl;
-        i++;
-    }
 }
 
 int main(int argc, char **argv)
@@ -58,7 +47,7 @@ int main(int argc, char **argv)
     try
     {
         auto db = create_db("./db/data.csv");
-        printMap(db);
+        print_map(db);
     }
     catch (const std::exception &e)
     {

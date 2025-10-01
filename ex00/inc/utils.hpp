@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   db.hpp                                             :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/19 17:34:01 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/01 14:02:33 by phhofman         ###   ########.fr       */
+/*   Created: 2025/10/01 13:51:28 by phhofman          #+#    #+#             */
+/*   Updated: 2025/10/01 14:02:35 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#include <iostream>
-#include <map>
-#include <string>
-#include <fstream>
-#include <stdexcept>
-#include <utility>
 
-std::map<int, float> create_db(const std::string &filepath);
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <map>
+#include <iostream>
+
+int date_to_int(const std::string &date);
+std::string int_to_date(int date);
+void print_map(const std::map<int, float> &map);

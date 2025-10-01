@@ -2,7 +2,7 @@ NAME = btc
 CXX = c++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
 
-VPATH = ./db
+VPATH = ./src
 
 SRCS = main.cpp db.cpp validation.cpp
 OBJS_DIR = objects
