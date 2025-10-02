@@ -4,7 +4,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
 
 VPATH = ./src
 
-SRCS = main.cpp db.cpp validation.cpp
+SRCS = main.cpp db.cpp validation.cpp btc.cpp utils.cpp
 OBJS_DIR = objects
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 

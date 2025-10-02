@@ -6,48 +6,35 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:41:06 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/01 14:02:44 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:40:20 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <fstream>
-#include <list>
-#include "db.hpp"
-#include "utils.hpp"
-
-bool check_extension(const std::string &filename, const std::string &extension)
-{
-    if (extension.size() > filename.size())
-        return false;
-
-    return std::equal(extension.rbegin(), extension.rend(), filename.rbegin());
-}
+#include "btc.hpp"
 
 int main(int argc, char **argv)
 {
 
-    // if (argc != 2)
-    // {
-    //     std::cerr << "Error: Invalid number of arguments" << std::endl;
-    //     std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
-    //     return 1;
-    // }
-    // const std::string filename = argv[1];
-    // if (!check_extension(filename, ".csv"))
-    // {
-    //     std::cerr << "Error: Filename <" << filename << "> has wrong extension." << std::endl;
-    //     std::cerr << "Extension must be .csv" << std::endl;
-    //     return 1;
-    // }
-    (void)argc;
-    (void)argv;
+    if (argc != 2)
+    {
+        std::cerr << "Error: Invalid number of arguments" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
+        return 1;
+    }
+
+    const std::string filepath = argv[1];
+    if (!check_extension(filepath, ".txt"))
+    {
+        std::cerr << "Error: Filename <" << filepath << "> has wrong extension." << std::endl;
+        std::cerr << "Extension must be .txt" << std::endl;
+        return 1;
+    }
+
     try
     {
         auto db = create_db("./db/data.csv");
-        print_map(db);
+
+        print_bitcoin_price_at_date(db, filepath);
     }
     catch (const std::exception &e)
     {

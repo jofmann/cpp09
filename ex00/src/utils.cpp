@@ -6,11 +6,26 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:51:08 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/01 14:02:07 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/02 11:27:25 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
+#include "validation.hpp"
+
+float input_value_to_float(const std::string &str)
+{
+    size_t pos;
+    float value = std::stof(str, &pos);
+    if (pos != str.length())
+        throw std::runtime_error("Error: not a number => " + str);
+
+    if (value < 0)
+        throw std::runtime_error("Error: not a positive number => " + str);
+    if (value > 1000)
+        throw std::runtime_error("Error: too large a number => " + str);
+    return value;
+}
 
 int date_to_int(const std::string &date)
 {
@@ -45,4 +60,17 @@ void print_map(const std::map<int, float> &map)
         std::cout << int_to_date(it->first) << " | " << it->second << std::endl;
         i++;
     }
+}
+
+std::string trim_whitespaces(const std::string &str)
+{
+    size_t start = 0;
+    while (start < str.size() && std::isspace(static_cast<unsigned char>(str[start])))
+        start++;
+
+    size_t end = str.size();
+    while (end > start && std::isspace(static_cast<unsigned char>(str[end - 1])))
+        end--;
+
+    return str.substr(start, end - start);
 }

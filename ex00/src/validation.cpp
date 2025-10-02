@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/30 12:53:36 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/01 10:22:03 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:30:02 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,10 @@ bool is_valid_input_line(const std::string &line)
     return true;
 }
 
-bool is_valid_input_value(const std::string &exchange_rate)
+bool check_extension(const std::string &filename, const std::string &extension)
 {
-    size_t pos;
-    int value = std::stof(exchange_rate, &pos);
-    if (pos != exchange_rate.length())
+    if (extension.size() > filename.size())
         return false;
 
-    if (value < 0 && value > 1000)
-        return false;
-    return true;
+    return std::equal(extension.rbegin(), extension.rend(), filename.rbegin());
 }

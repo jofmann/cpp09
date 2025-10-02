@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation.hpp                                     :+:      :+:    :+:   */
+/*   btc.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/01 10:11:37 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/01 15:30:36 by phhofman         ###   ########.fr       */
+/*   Created: 2025/10/01 15:34:56 by phhofman          #+#    #+#             */
+/*   Updated: 2025/10/01 15:40:27 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <string>
-#include <regex>
+#include "validation.hpp"
+#include "utils.hpp"
+#include "db.hpp"
+
 #include <iostream>
+#include <map>
+#include <string>
+#include <fstream>
+#include <stdexcept>
+#include <utility>
 
-bool check_extension(const std::string &filename, const std::string &extension);
-
-// db
-bool is_valid_db_exchange_rate(const std::string &exchange_rate);
-bool is_valid_db_date(const std::string &date);
-bool is_valid_db_line(const std::string &line);
-
-// input
-bool is_valid_input_line(const std::string &line);
+void print_bitcoin_price_at_date(const std::map<int, float> &db, const std::string &filepath);

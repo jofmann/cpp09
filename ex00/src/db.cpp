@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:19:10 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/01 14:09:24 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:32:49 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 std::string extract_date(const std::string &line, size_t idx, const std::string &line_pos)
 {
     std::string date = line.substr(0, idx);
-    if (!is_valid_db_date(date))
+    if (!is_valid_db_date(date)) // TODO: Maybe validation outside of function ???
         throw std::runtime_error("Invalid date: '" + date + "' (expected YYYY-MM-DD) at pos: " + line_pos);
     return date;
 }
@@ -63,16 +63,17 @@ std::map<int, float> create_db(const std::string &filepath)
     return db_map;
 }
 
-std::map<int, float>::iterator get_db_entry(std::map<int, float> db, std::string date)
+std::pair<int, float> get_db_entry(const std::map<int, float> &db, int date)
 {
-    auto it = db.lower_bound(date_to_int(date));
+    auto it = db.lower_bound(date);
 
-    if (it != db.end() && it->first == date_to_int(date))
-        return it;
+    if (it != db.end() && it->first == date)
+        return {it->first, it->second};
+
     if (it != db.begin())
     {
         it--;
-        return it;
+        return {it->first, it->second};
     }
-    throw std::runtime_error("No earlier date '" + date + "' available");
+    throw std::runtime_error("Error: no date found => " + int_to_date(date));
 }
