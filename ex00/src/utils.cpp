@@ -6,35 +6,20 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:51:08 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/02 11:27:25 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:51:27 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 #include "validation.hpp"
 
-float input_value_to_float(const std::string &str)
-{
-    size_t pos;
-    float value = std::stof(str, &pos);
-    if (pos != str.length())
-        throw std::runtime_error("Error: not a number => " + str);
-
-    if (value < 0)
-        throw std::runtime_error("Error: not a positive number => " + str);
-    if (value > 1000)
-        throw std::runtime_error("Error: too large a number => " + str);
-    return value;
-}
-
 int date_to_int(const std::string &date)
 {
-    // Annahme: date = "YYYY-MM-DD"
     int year = std::stoi(date.substr(0, 4));
     int month = std::stoi(date.substr(5, 2));
     int day = std::stoi(date.substr(8, 2));
 
-    return year * 10000 + month * 100 + day;
+    return (year * 10000) + (month * 100) + day;
 }
 
 std::string int_to_date(int date)
@@ -73,4 +58,35 @@ std::string trim_whitespaces(const std::string &str)
         end--;
 
     return str.substr(start, end - start);
+}
+
+std::string extract_date(const std::string &line, size_t idx)
+{
+    std::string date = trim_whitespaces(line.substr(0, idx));
+    if (!is_valid_date(date))
+        throw std::invalid_argument("Error: invalid date => " + date);
+    return date;
+}
+
+float extract_value(const std::string &line, size_t idx, char delimeter)
+{
+    std::string str = trim_whitespaces(line.substr(idx));
+
+    size_t pos;
+    float value = std::stof(str, &pos);
+    if (pos != str.length())
+        throw std::invalid_argument("Error: not a number => " + str);
+    if (value < 0)
+        throw std::invalid_argument("Error: not a positive number => " + str);
+    if (delimeter == '|' && value > 1000)
+        throw std::invalid_argument("Error: too large a number => " + str);
+    return value;
+}
+
+std::pair<int, float> get_key_value(const std::string &line, char delimeter)
+{
+    size_t idx = line.find(delimeter);
+    std::string date = extract_date(line, idx);
+    float value = extract_value(line, idx + 1, delimeter);
+    return {date_to_int(date), value};
 }
