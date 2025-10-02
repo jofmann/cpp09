@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 13:51:28 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/02 13:13:13 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:39:02 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #include <utility>
 #include <stdexcept>
 
-float input_value_to_float(const std::string &str);
 int date_to_int(const std::string &date);
 std::string int_to_date(int date);
 
