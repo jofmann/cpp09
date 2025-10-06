@@ -4,7 +4,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
 
 VPATH = ./src
 
-SRCS = main.cpp
+SRCS = main.cpp RPN.cpp
 OBJS_DIR = objects
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 

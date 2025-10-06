@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 10:51:21 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/06 11:46:06 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/06 13:51:23 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@ class RPN
     ~RPN();
 
 public:
-    static double evaluate(const std::string &notation);
+    static float evaluate(const std::string &notation);
 };
