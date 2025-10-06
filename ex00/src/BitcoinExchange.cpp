@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 15:33:46 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/02 16:59:56 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/06 10:39:37 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ BitcoinExchange::BitcoinExchange(const std::string &filepath)
         if (!is_valid_line(line, ','))
             throw BitcoinExchangeException("Database Error:  Invalid line => " + line + " on line " + std::to_string(line_pos));
         if (line_pos == 1 && line != "date,exchange_rate")
-            throw BitcoinExchange("Database Error: Header wrong! Must be 'date,exchange_rate'");
+            throw BitcoinExchangeException("Database Error: Header wrong! Must be 'date,exchange_rate'");
         else if (line_pos == 1)
             continue;
         try
