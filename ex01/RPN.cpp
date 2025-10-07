@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 10:51:12 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/06 15:26:58 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:12:51 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,22 @@ int convert_token_to_int(const std::string &token)
     return num;
 }
 
+void execute_operation(std::stack<float> &stack, float a, float b, const std::string &op)
+{
+    if (op == "+")
+        stack.push(a + b);
+    else if (op == "-")
+        stack.push(a - b);
+    else if (op == "*")
+        stack.push(a * b);
+    else if (op == "/")
+    {
+        if (b == 0)
+            throw std::invalid_argument("Error: division by zero");
+        stack.push(a / b);
+    }
+}
+
 float RPN::evaluate(const std::string &notation)
 {
     std::stack<float> stack;
@@ -81,18 +97,7 @@ float RPN::evaluate(const std::string &notation)
             stack.pop();
             float a = stack.top();
             stack.pop();
-            if (token == "+")
-                stack.push(a + b);
-            else if (token == "-")
-                stack.push(a - b);
-            else if (token == "*")
-                stack.push(a * b);
-            else if (token == "/")
-            {
-                if (b == 0)
-                    throw std::invalid_argument("Error: division by zero");
-                stack.push(a / b);
-            }
+            execute_operation(stack, a, b, token);
         }
     }
     if (stack.size() != 1)
