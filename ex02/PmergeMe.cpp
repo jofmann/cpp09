@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/08 11:24:39 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/08 14:46:06 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,24 @@ void PmergeMe::sort()
 {
 }
 
-void step1(std::vector<unsigned int> vec, int depth)
+void step1(std::vector<unsigned int> &vec, int depth)
 {
-    if (vec.size() < depth * 2)
+
+    int pair_size = static_cast<int>(std::pow(2, depth - 1));
+    if (pair_size * 2 > vec.size())
         return;
+
+    bool is_odd = vec.size() % 2 == 1;
+
+    for (auto curr = vec.begin(); curr + pair_size + is_odd != vec.end(); curr += pair_size)
+    {
+        for ()
+            auto next = (curr + pair_size);
+        unsigned int a = *curr;
+        unsigned int b = *next;
+        if (a > b)
+        {
+            std::swap(*curr, *next);
+        }
+    }
 }

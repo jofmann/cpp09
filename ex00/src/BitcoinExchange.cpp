@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 15:33:46 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/06 10:39:37 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/06 13:32:13 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ BitcoinExchange::BitcoinExchange(const std::string &filepath)
     }
 }
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _db(other._db)
-{
-}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _db(other._db) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
@@ -83,6 +81,4 @@ BitcoinExchange::get_entry(int date) const
     throw BitcoinExchangeException("Error: No entry with => " + int_to_date(date));
 }
 
-BitcoinExchange::~BitcoinExchange()
-{
-}
+BitcoinExchange::~BitcoinExchange() {}

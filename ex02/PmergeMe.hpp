@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/08 10:50:45 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/08 14:32:14 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <list>
 #include <string>
 #include <iostream>
-#include <cstring>
+#include <cmath>
 
 class PmergeMe
 {
