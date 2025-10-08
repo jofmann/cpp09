@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/07 17:02:31 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/08 11:24:39 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,30 @@ PmergeMe::~PmergeMe()
 {
 }
 
+void PmergeMe::print_vector()
+{
+    for (auto it = _vec.begin(); it != _vec.end(); it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
+void PmergeMe::print_list()
+{
+    for (auto it = _list.begin(); it != _list.end(); it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
 void PmergeMe::sort()
 {
+}
+
+void step1(std::vector<unsigned int> vec, int depth)
+{
+    if (vec.size() < depth * 2)
+        return;
 }

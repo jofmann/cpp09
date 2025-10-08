@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/07 16:53:17 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/08 10:50:45 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ public:
     PmergeMe(const PmergeMe &other);
     PmergeMe &operator=(const PmergeMe &other);
 
+    void print_vector();
+    void print_list();
     void sort();
 };
