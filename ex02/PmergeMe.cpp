@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/09 10:44:13 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:10:18 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,15 @@ void PmergeMe::print_list()
     std::cout << std::endl;
 }
 
+void print_v(std::vector<unsigned int> vec)
+{
+    for (auto it = vec.begin(); it != vec.end(); it++)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
 void step1(std::vector<unsigned int> &vec, int depth)
 {
 
@@ -129,7 +138,35 @@ void step1(std::vector<unsigned int> &vec, int depth)
             std::swap_ranges(start, start + pair_size, start + pair_size);
     }
     step1(vec, depth + 1);
-    std::vector<unsigned int> the_main;
+    std::vector<unsigned int> main_chain;
+    std::vector<unsigned int> pend;
+
+    start = vec.begin();
+    end = start + pair_size * 2;
+    main_chain.insert(main_chain.end(), start, end);
+    start = end;
+    // insert pairs in main or pend
+    for (int i = 3; i <= pairs; i++)
+    {
+        if (i % 2 == 0)
+        {
+            main_chain.insert(main_chain.end(), start, end);
+        }
+        else
+        {
+            pend.insert(pend.end(), start, end);
+        }
+        start += pair_size;
+        end = start + pair_size;
+    }
+    std::cout << depth << " main: ";
+    print_v(main_chain);
+    std::cout << "pend: ";
+    print_v(pend);
+    // for (size_t i = 2 * pair_size; i + pair_size <= vec.size(); i += 2 * pair_size)
+    // {
+    //     main_chain.insert(main_chain.end(), vec.begin() + i, vec.begin() + i + pair_size);
+    // }
 }
 
 void PmergeMe::sort()
