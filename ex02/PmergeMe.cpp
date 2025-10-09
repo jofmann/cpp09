@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/08 14:46:06 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/09 10:44:13 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,28 +110,29 @@ void PmergeMe::print_list()
     std::cout << std::endl;
 }
 
-void PmergeMe::sort()
-{
-}
-
 void step1(std::vector<unsigned int> &vec, int depth)
 {
 
-    int pair_size = static_cast<int>(std::pow(2, depth - 1));
+    size_t pair_size = static_cast<int>(std::pow(2, depth - 1));
     if (pair_size * 2 > vec.size())
         return;
 
-    bool is_odd = vec.size() % 2 == 1;
+    int pairs = vec.size() / pair_size - ((vec.size() / pair_size) % 2);
+    auto start = vec.begin();
+    auto end = start + pairs * pair_size;
 
-    for (auto curr = vec.begin(); curr + pair_size + is_odd != vec.end(); curr += pair_size)
+    for (; start != end; start += pair_size * 2)
     {
-        for ()
-            auto next = (curr + pair_size);
-        unsigned int a = *curr;
-        unsigned int b = *next;
-        if (a > b)
-        {
-            std::swap(*curr, *next);
-        }
+        unsigned int left_end = start[pair_size - 1];
+        unsigned int right_end = start[pair_size * 2 - 1];
+        if (left_end > right_end)
+            std::swap_ranges(start, start + pair_size, start + pair_size);
     }
+    step1(vec, depth + 1);
+    std::vector<unsigned int> the_main;
+}
+
+void PmergeMe::sort()
+{
+    step1(_vec, 1);
 }
