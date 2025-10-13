@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/09 17:10:18 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:04:19 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,19 @@ void print_v(std::vector<unsigned int> vec)
     }
     std::cout << std::endl;
 }
+void print_info(int lvl, int elements, int pairs, int pair_size)
+{
+    std::cout << "lvl: " << lvl << " elements: " << elements << " pairs: " << pairs << " pair_size: " << pair_size << std::endl;
+}
 
-void step1(std::vector<unsigned int> &vec, int depth)
+void step1(std::vector<unsigned int> vec, int depth)
 {
 
     size_t pair_size = static_cast<int>(std::pow(2, depth - 1));
     if (pair_size * 2 > vec.size())
         return;
 
+    int elements = vec.size() / pair_size;
     int pairs = vec.size() / pair_size - ((vec.size() / pair_size) % 2);
     auto start = vec.begin();
     auto end = start + pairs * pair_size;
@@ -145,8 +150,9 @@ void step1(std::vector<unsigned int> &vec, int depth)
     end = start + pair_size * 2;
     main_chain.insert(main_chain.end(), start, end);
     start = end;
+    end = start + pair_size;
     // insert pairs in main or pend
-    for (int i = 3; i <= pairs; i++)
+    for (int i = 3; i <= elements; i++)
     {
         if (i % 2 == 0)
         {
@@ -159,7 +165,8 @@ void step1(std::vector<unsigned int> &vec, int depth)
         start += pair_size;
         end = start + pair_size;
     }
-    std::cout << depth << " main: ";
+    print_info(depth, elements, pairs, pair_size);
+    std::cout << "main: ";
     print_v(main_chain);
     std::cout << "pend: ";
     print_v(pend);
