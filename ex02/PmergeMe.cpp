@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/14 17:56:04 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:19:13 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,121 +109,8 @@ void PmergeMe::print_list()
     }
     std::cout << std::endl;
 }
-using vector = std::vector<unsigned int>;
 
-void print_v(vector vec)
-{
-    for (auto it = vec.begin(); it != vec.end(); it++)
-    {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-}
-void print_info(int lvl, int elements, int pairs, int element_size)
-{
-    std::cout << "lvl: " << lvl << " elements: " << elements << " pairs: " << pairs << " element_size: " << element_size << std::endl;
-}
-
-void step2(vector &main_chain, vector &pend, vector vec, size_t element_size, int elements)
-{
-    auto start = vec.begin();
-    auto end = start + element_size * 2;
-    main_chain.insert(main_chain.end(), start, end);
-    start = end;
-    end = start + element_size;
-    // insert pairs in main or pend
-    for (int i = 3; i <= elements; i++)
-    {
-        if (i % 2 == 0)
-        {
-            main_chain.insert(main_chain.end(), start, end);
-        }
-        else
-        {
-            pend.insert(pend.end(), start, end);
-        }
-        start += element_size;
-        end = start + element_size;
-    }
-}
-
-unsigned int jacobsthal(unsigned int n)
-{
-    if (n == 0)
-        return 0;
-    if (n == 1)
-        return 1;
-    return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
-}
-
-std::iterator left_bound(const vector &main_chain, int element_size, int target)
-{
-    size_t elements = main_chain.size() / element_size;
-
-    if (target >= elements)
-        return main_chain.end();
-
-    auto start = main_chain.begin() + (element_size * 2);
-
-    for (auto it = start; it != main_chain.end(); it += element_size)
-    {
-        }
-}
-
-void step3(vector &main_chain, vector &pend, int element_size)
-{
-    unsigned int n = 3;
-    unsigned int insertions = jacobsthal(n) - jacobsthal(n - 1);
-
-    unsigned int i = 1;
-    auto it = pend.begin();
-    while (it != pend.end() && i < n)
-    {
-        it += element_size;
-        i++;
-    }
-
-    size_t elements_in_main = main_chain.size() / element_size;
-    if (elements_in_main >)
-        while (pend.size() > element_size * insertions)
-        {
-            insertions--;
-        }
-}
-
-void step1(vector &vec, int depth)
-{
-
-    size_t element_size = static_cast<int>(std::pow(2, depth - 1));
-    if (element_size * 2 > vec.size())
-        return;
-
-    int elements = vec.size() / element_size;
-    int pairs = vec.size() / element_size - ((vec.size() / element_size) % 2);
-    auto start = vec.begin();
-    auto end = start + pairs * element_size;
-
-    for (; start != end; start += element_size * 2)
-    {
-        unsigned int left_end = start[element_size - 1];
-        unsigned int right_end = start[element_size * 2 - 1];
-        if (left_end > right_end)
-            std::swap_ranges(start, start + element_size, start + element_size);
-    }
-    step1(vec, depth + 1);
-    vector main_chain;
-    vector pend;
-    print_info(depth, elements, pairs, element_size);
-
-    step2(main_chain, pend, vec, element_size, elements);
-    std::cout << "main: ";
-    print_v(main_chain);
-    std::cout << "pend: ";
-    print_v(pend);
-    std::cout << std::endl;
-}
-
-void PmergeMe::sort()
-{
-    step1(_vec, 1);
-}
+// void PmergeMe::sort()
+// {
+//     step1(_vec, 1);
+// }

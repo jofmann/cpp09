@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/08 14:32:14 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/15 16:05:32 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 class PmergeMe
 {
@@ -37,3 +38,11 @@ public:
     void print_list();
     void sort();
 };
+
+using vector = std::vector<unsigned int>;
+
+void print_elements(vector::const_iterator it, int element_size);
+void print_v(const vector &vec, int element_size);
+unsigned int jacobsthal(unsigned int n);
+vector::iterator bi_search(vector::iterator first, vector::iterator last, unsigned int target, int element_size);
+void binary_insertion(vector &main_chain, vector &pend, int element_size);
