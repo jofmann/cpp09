@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:34:13 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/15 16:53:17 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/16 13:23:52 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,18 @@ void print_info(int lvl, int elements, int pairs, int element_size)
     std::cout << "lvl: " << lvl << " elements: " << elements << " pairs: " << pairs << " element_size: " << element_size << std::endl;
 }
 
-void init_main_pend(vector &main_chain, vector &pend, const vector &vec, size_t element_size, int elements)
+void init_main_pend(vector &main, vector &pend, const vector &vec, size_t element_size, int elements)
 {
     auto start = vec.begin();
     auto end = start + element_size * 2;
-    main_chain.insert(main_chain.end(), start, end);
+    main.insert(main.end(), start, end);
     start = end;
     end = start + element_size;
     // insert pairs in main or pend
     for (int i = 3; i <= elements; i++)
     {
         if (i % 2 == 0)
-            main_chain.insert(main_chain.end(), start, end);
+            main.insert(main.end(), start, end);
         else
             pend.insert(pend.end(), start, end);
         start += element_size;
@@ -69,7 +69,7 @@ unsigned int jacobsthal(unsigned int n)
     return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
 }
 
-vector::iterator bi_search(vector::iterator first, vector::iterator last, unsigned int target, int element_size)
+vector::iterator bi_search(vector::iterator first, vector::const_iterator last, unsigned int target, int element_size)
 {
     int left = 0;
     int right = (last - first) / element_size;
@@ -90,84 +90,116 @@ vector::iterator bi_search(vector::iterator first, vector::iterator last, unsign
     return first + left * element_size;
 }
 
-void binary_insertion(vector &main_chain, vector &pend, int element_size)
+// void jacobsthal_insertion(vector &main, vector &pend, int element_size)
+// {
+// }
+
+// void reverse_insertion(vector &main, vector &pend, int element_size)
+// {
+// }
+
+vector::const_iterator get_right_bound(const vector &vec, int steps)
+{
+
+    if (std::distance(vec.begin(), vec.end()) > steps)
+        return vec.begin() + steps;
+    else
+        return vec.end();
+}
+
+void binary_insertion(vector &main, vector &pend, int element_size)
 {
     unsigned int n = 3;
-    unsigned int b_target = jacobsthal(n);
+    unsigned int b_target_idx = jacobsthal(n);
     unsigned int insertions = jacobsthal(n) - jacobsthal(n - 1);
 
     unsigned int inserted_count = 0;
     unsigned int total_insertions = 0;
-    unsigned int elements_left = pend.size() / element_size;
-    while (elements_left > total_insertions)
+    unsigned int elements_in_pend = pend.size() / element_size;
+    if (b_target_idx < elements_in_pend)
     {
-        if (insertions <= inserted_count)
+        while (elements_in_pend > total_insertions)
         {
-            n++;
-            b_target = jacobsthal(n);
-            if (b_target > elements_left)
-                break;
-            insertions = b_target - jacobsthal(n - 1);
-            inserted_count = 0;
+            if (insertions <= inserted_count)
+            {
+                n++;
+                b_target_idx = jacobsthal(n);
+                if (b_target_idx > elements_in_pend)
+                    break;
+                insertions = b_target_idx - jacobsthal(n - 1);
+                inserted_count = 0;
+            }
+            std::cout << "insertions: " << insertions << std::endl;
+            std::cout << "insertion_count: " << inserted_count << std::endl;
+            std::cout << "b_target_idx: " << b_target_idx << std::endl;
+            std::cout << "total_insertions: " << total_insertions << std::endl;
+
+            auto b_target_it = pend.begin() + (b_target_idx - 2) * element_size;
+
+            auto right_bound = get_right_bound(main, (b_target_idx + total_insertions) * element_size);
+
+            auto b_target_pos = bi_search(main.begin(), right_bound, *(b_target_it + element_size - 1), element_size);
+
+            std::cout << "element: ";
+            print_elements(b_target_it, element_size);
+            std::cout << std::endl;
+            std::cout << "right bound: ";
+            if (right_bound != main.end())
+                print_elements(right_bound, element_size);
+            else
+                std::cout << "END";
+            std::cout << std::endl;
+
+            main.insert(b_target_pos, b_target_it, b_target_it + element_size);
+            // pend.erase(b_target_it, b_target_it + element_size);
+            inserted_count++;
+            b_target_idx--;
+            total_insertions++;
+            std::cout << "pend: ";
+            print_v(pend, element_size);
+            std::cout << "\nmain: ";
+            print_v(main, element_size);
+            std::cout << std::endl;
         }
-        std::cout << "insertions: " << insertions << std::endl;
-        std::cout << "insertion_count: " << inserted_count << std::endl;
-        std::cout << "b_target: " << b_target << std::endl;
-        std::cout << "total_insertions: " << total_insertions << std::endl;
-
-        auto target_el_it = pend.begin() + (b_target - 2) * element_size;
-        auto right_bound = main_chain.begin() + (b_target + total_insertions) * element_size;
-        auto found = bi_search(main_chain.begin(), right_bound, *(target_el_it + element_size - 1), element_size);
-
-        std::cout << "element: ";
-        print_elements(target_el_it, element_size);
-        std::cout << std::endl;
-        std::cout << "right bound: ";
-        print_elements(right_bound, element_size);
-        std::cout << std::endl;
-
-        main_chain.insert(found, target_el_it, target_el_it + element_size);
-        // pend.erase(target_el_it, target_el_it + element_size);
-        inserted_count++;
-        b_target--;
-        total_insertions++;
-        std::cout << "pend: ";
-        print_v(pend, element_size);
-        std::cout << "\nmain: ";
-        print_v(main_chain, element_size);
-        std::cout << std::endl;
     }
-    if (total_insertions < elements_left)
+    if (total_insertions < elements_in_pend)
     {
         int end_idx = total_insertions * element_size;
         pend.erase(pend.begin(), pend.begin() + end_idx);
-        std::cout << "pend: ";
-        print_v(pend, element_size);
         // reverse insert
-        elements_left = pend.size() / element_size;
-        while (elements_left > 0)
+        elements_in_pend = pend.size() / element_size;
+        while (elements_in_pend > 0)
         {
+            std::cout << "reverse" << std::endl;
+            std::cout << "insertions: " << insertions << std::endl;
+            std::cout << "insertion_count: " << inserted_count << std::endl;
+            std::cout << "b_target_idx: " << b_target_idx << std::endl;
+            std::cout << "total_insertions: " << total_insertions << std::endl;
+
             auto target_it = pend.end() - element_size;
-            auto right_bound = main_chain.begin() + (b_target + total_insertions) * element_size;
-            auto found = bi_search(main_chain.begin(), right_bound, *(target_it + element_size - 1), element_size);
+            auto right_bound = get_right_bound(main, (b_target_idx + total_insertions) * element_size);
+            auto found = bi_search(main.begin(), right_bound, *(target_it + element_size - 1), element_size);
 
             std::cout << "element: ";
             print_elements(target_it, element_size);
             std::cout << std::endl;
             std::cout << "right bound: ";
-            print_elements(right_bound, element_size);
+            if (right_bound != main.end())
+                print_elements(right_bound, element_size);
+            else
+                std::cout << "END";
             std::cout << std::endl;
 
-            main_chain.insert(found, target_it, target_it + element_size);
+            main.insert(found, target_it, target_it + element_size);
             pend.erase(target_it, target_it + element_size);
-            elements_left = pend.size() / element_size;
-            b_target--;
+            elements_in_pend--;
+            b_target_idx--;
             total_insertions++;
 
             std::cout << "pend: ";
             print_v(pend, element_size);
             std::cout << "\nmain: ";
-            print_v(main_chain, element_size);
+            print_v(main, element_size);
             std::cout << std::endl;
         }
     }
@@ -193,14 +225,17 @@ void sort_pairs(vector &vec, int depth)
             std::swap_ranges(start, start + element_size, start + element_size);
     }
     sort_pairs(vec, depth + 1);
-    vector main_chain;
+    vector main;
     vector pend;
     print_info(depth, elements, pairs, element_size);
 
-    init_main_pend(main_chain, pend, vec, element_size, elements);
+    init_main_pend(main, pend, vec, element_size, elements);
     std::cout << "main: ";
-    print_v(main_chain, element_size);
+    print_v(main, element_size);
     std::cout << "pend: ";
     print_v(pend, element_size);
+    if (pend.size() > 0)
+        binary_insertion(main, pend, element_size);
+    vec = main;
     std::cout << std::endl;
 }

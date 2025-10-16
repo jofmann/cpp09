@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/15 16:05:32 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/15 17:18:34 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,4 @@ void print_v(const vector &vec, int element_size);
 unsigned int jacobsthal(unsigned int n);
 vector::iterator bi_search(vector::iterator first, vector::iterator last, unsigned int target, int element_size);
 void binary_insertion(vector &main_chain, vector &pend, int element_size);
+void sort_pairs(vector &vec, int depth);
