@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 15:31:22 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/16 13:38:57 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/16 17:17:20 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ int main(int argc, char **argv)
     // print_v(main_chain, 1);
     // std::cout << std::endl;
     // binary_insertion(main_chain, pend, 1);
-    // vector s = {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7, 100}; // double free
-    vector s = {11, 2, 17, 0, 16, 8, 6, 15, 10, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7, 3};
-    // vector s = {11, 2, 3};
-    std::cout << "befor sort: " << std::endl;
+    // vector s = {11, 2, 17, 0, 16,55 8, 6, 15, 10, 50, 3, 21, 1, 18, 9, 14, 19, 12, 5, 4, 20, 13, 7, 100, 45}; // double free
+    vector s = {11, 3, 45, 1, 4, 5, 6, 0, 2, 3333, 4566, 9, 10, 7, 9, 5444, 17};
+    std::cout << "before: " << std::endl;
     print_v(s, s.size());
     sort_pairs(s, 1);
-    std::cout << "after sort: " << std::endl;
+    std::cout << "after: " << std::endl;
     print_v(s, s.size());
 }

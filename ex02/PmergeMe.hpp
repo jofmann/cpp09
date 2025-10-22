@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/15 17:18:34 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:01:29 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 class PmergeMe
 {
 private:
-    std::vector<unsigned int> _vec;
-    std::list<unsigned int> _list;
+    std::vector<size_t> _vec;
+    std::list<size_t> _list;
 
 public:
     class PmergeMe_exception;
@@ -39,11 +39,11 @@ public:
     void sort();
 };
 
-using vector = std::vector<unsigned int>;
+using vector = std::vector<size_t>;
 
-void print_elements(vector::const_iterator it, int element_size);
-void print_v(const vector &vec, int element_size);
-unsigned int jacobsthal(unsigned int n);
-vector::iterator bi_search(vector::iterator first, vector::iterator last, unsigned int target, int element_size);
-void binary_insertion(vector &main_chain, vector &pend, int element_size);
+void print_elements(vector::const_iterator it, vector::const_iterator end, size_t element_size);
+void print_v(const vector &vec, size_t element_size);
+size_t jacobsthal(size_t n);
+vector::iterator bi_search(vector::iterator first, vector::iterator last, size_t target, size_t element_size);
+void binary_insertion(vector &main_chain, vector &pend, size_t element_size);
 void sort_pairs(vector &vec, int depth);

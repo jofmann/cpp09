@@ -6,32 +6,37 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:34:13 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/16 13:23:52 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:15:25 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-using vector = std::vector<unsigned int>;
+using vector = std::vector<size_t>;
 
-void print_elements(vector::const_iterator it, int element_size)
+void print_elements(vector::const_iterator it,
+                    vector::const_iterator end,
+                    size_t element_size)
 {
     std::cout << "[";
-    for (int i = 0; i < element_size; i++)
+    for (size_t i = 0; i < element_size; i++)
     {
-        if (i < element_size - 1)
-            std::cout << *(it + i) << ",";
-        else
-            std::cout << *(it + i);
+        auto current = it + i;
+        if (current >= end)
+            break;
+
+        std::cout << *current;
+        if (i < element_size - 1 && current + 1 < end)
+            std::cout << ",";
     }
     std::cout << "]";
 }
 
-void print_v(const vector &vec, int element_size)
+void print_v(const vector &vec, size_t element_size)
 {
-    for (auto it = vec.begin(); it != vec.end(); it += element_size)
+    for (auto it = vec.begin(); it < vec.end(); it += element_size)
     {
-        print_elements(it, element_size);
+        print_elements(it, vec.end(), element_size);
     }
     std::cout << std::endl;
 }
@@ -60,7 +65,7 @@ void init_main_pend(vector &main, vector &pend, const vector &vec, size_t elemen
     }
 }
 
-unsigned int jacobsthal(unsigned int n)
+size_t jacobsthal(size_t n)
 {
     if (n == 0)
         return 0;
@@ -69,7 +74,7 @@ unsigned int jacobsthal(unsigned int n)
     return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
 }
 
-vector::iterator bi_search(vector::iterator first, vector::const_iterator last, unsigned int target, int element_size)
+vector::iterator bi_search(vector::iterator first, vector::const_iterator last, size_t target, size_t element_size)
 {
     int left = 0;
     int right = (last - first) / element_size;
@@ -107,16 +112,16 @@ vector::const_iterator get_right_bound(const vector &vec, int steps)
         return vec.end();
 }
 
-void binary_insertion(vector &main, vector &pend, int element_size)
+void binary_insertion(vector &main, vector &pend, size_t element_size)
 {
-    unsigned int n = 3;
-    unsigned int b_target_idx = jacobsthal(n);
-    unsigned int insertions = jacobsthal(n) - jacobsthal(n - 1);
+    size_t n = 3;
+    size_t b_target_idx = jacobsthal(n);
+    size_t insertions = jacobsthal(n) - jacobsthal(n - 1);
 
-    unsigned int inserted_count = 0;
-    unsigned int total_insertions = 0;
-    unsigned int elements_in_pend = pend.size() / element_size;
-    if (b_target_idx < elements_in_pend)
+    size_t inserted_count = 0;
+    size_t total_insertions = 0;
+    size_t elements_in_pend = pend.size() / element_size;
+    if (b_target_idx - 1 < elements_in_pend)
     {
         while (elements_in_pend > total_insertions)
         {
@@ -125,7 +130,10 @@ void binary_insertion(vector &main, vector &pend, int element_size)
                 n++;
                 b_target_idx = jacobsthal(n);
                 if (b_target_idx > elements_in_pend)
+                {
+                    std::cout << "break b_target_idx:" << b_target_idx << " elements_in_pend: " << elements_in_pend << std::endl;
                     break;
+                }
                 insertions = b_target_idx - jacobsthal(n - 1);
                 inserted_count = 0;
             }
@@ -141,11 +149,11 @@ void binary_insertion(vector &main, vector &pend, int element_size)
             auto b_target_pos = bi_search(main.begin(), right_bound, *(b_target_it + element_size - 1), element_size);
 
             std::cout << "element: ";
-            print_elements(b_target_it, element_size);
+            print_elements(b_target_it, pend.end(), element_size);
             std::cout << std::endl;
             std::cout << "right bound: ";
             if (right_bound != main.end())
-                print_elements(right_bound, element_size);
+                print_elements(right_bound, main.end(), element_size);
             else
                 std::cout << "END";
             std::cout << std::endl;
@@ -181,11 +189,11 @@ void binary_insertion(vector &main, vector &pend, int element_size)
             auto found = bi_search(main.begin(), right_bound, *(target_it + element_size - 1), element_size);
 
             std::cout << "element: ";
-            print_elements(target_it, element_size);
+            print_elements(target_it, pend.end(), element_size);
             std::cout << std::endl;
             std::cout << "right bound: ";
             if (right_bound != main.end())
-                print_elements(right_bound, element_size);
+                print_elements(right_bound, main.end(), element_size);
             else
                 std::cout << "END";
             std::cout << std::endl;
@@ -217,19 +225,27 @@ void sort_pairs(vector &vec, int depth)
     auto start = vec.begin();
     auto end = start + pairs * element_size;
 
+    print_info(depth, elements, pairs, element_size);
+    std::cout << "before pair_sort: \n";
+    print_v(vec, element_size);
     for (; start != end; start += element_size * 2)
     {
-        unsigned int left_end = start[element_size - 1];
-        unsigned int right_end = start[element_size * 2 - 1];
+        size_t left_end = start[element_size - 1];
+        size_t right_end = start[element_size * 2 - 1];
         if (left_end > right_end)
             std::swap_ranges(start, start + element_size, start + element_size);
     }
+    std::cout << "after pair_sort: \n";
+    print_v(vec, element_size);
     sort_pairs(vec, depth + 1);
+
     vector main;
     vector pend;
-    print_info(depth, elements, pairs, element_size);
 
     init_main_pend(main, pend, vec, element_size, elements);
+
+    print_info(depth, elements, pairs, element_size);
+    print_v(vec, element_size);
     std::cout << "main: ";
     print_v(main, element_size);
     std::cout << "pend: ";
