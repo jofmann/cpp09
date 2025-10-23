@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:34:13 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/22 13:15:25 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:23:59 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ void binary_insertion(vector &main, vector &pend, size_t element_size)
     size_t inserted_count = 0;
     size_t total_insertions = 0;
     size_t elements_in_pend = pend.size() / element_size;
-    if (b_target_idx - 1 < elements_in_pend)
+    std::cout << "b_target_idx: " << b_target_idx << " elements_in_pend: " << elements_in_pend << std::endl;
+    if (b_target_idx - 1 < elements_in_pend) // TODO: check ob diese bedingung korrekt ist. wann soll ich reverse inserten
     {
         while (elements_in_pend > total_insertions)
         {
@@ -213,6 +214,15 @@ void binary_insertion(vector &main, vector &pend, size_t element_size)
     }
 }
 
+void insert_rest(const vector &vec, vector &main)
+{
+    if (vec.size() > main.size())
+    {
+        auto it = vec.begin() + main.size();
+        main.insert(main.end(), it, vec.end());
+    }
+}
+
 void sort_pairs(vector &vec, int depth)
 {
 
@@ -252,6 +262,9 @@ void sort_pairs(vector &vec, int depth)
     print_v(pend, element_size);
     if (pend.size() > 0)
         binary_insertion(main, pend, element_size);
+    insert_rest(vec, main);
+    std::cout << "main: ";
+    print_v(main, element_size);
     vec = main;
     std::cout << std::endl;
 }
