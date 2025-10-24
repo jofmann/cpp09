@@ -6,13 +6,17 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:34:13 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/23 17:03:03 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/24 14:00:09 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
 using vector = std::vector<size_t>;
+
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define RESET "\033[0m"
 
 void print_elements(vector::const_iterator it,
                     vector::const_iterator end,
@@ -95,14 +99,6 @@ vector::iterator bi_search(vector::iterator first, vector::const_iterator last, 
     return first + left * block_size;
 }
 
-// void jacobsthal_insertion(vector &main, vector &pend, int block_size)
-// {
-// }
-
-// void reverse_insertion(vector &main, vector &pend, int block_size)
-// {
-// }
-
 vector::const_iterator get_right_bound(const vector &vec, int steps)
 {
 
@@ -111,11 +107,12 @@ vector::const_iterator get_right_bound(const vector &vec, int steps)
     else
         return vec.end();
 }
-void insert_block(vector &main, const vector &pend, size_t target_jacob, size_t block_size, size_t total_inserted)
-{
-    auto target_block = std::next(pend.begin(), (target_jacob - 2) * block_size);
 
-    size_t right_bound_steps = (target_jacob + total_inserted) * block_size;
+void insert_block(vector &main, vector &pend, size_t b_id, size_t block_size, size_t &offset)
+{
+    auto target_block = std::next(pend.begin(), (b_id - 2) * block_size);
+
+    size_t right_bound_steps = (b_id + offset) * block_size;
     auto right_bound = get_right_bound(main, right_bound_steps);
 
     size_t search_value = *(target_block + block_size - 1);
@@ -126,108 +123,196 @@ void insert_block(vector &main, const vector &pend, size_t target_jacob, size_t 
     std::cout << std::endl;
     std::cout << "right bound: ";
     if (right_bound != main.end())
+    {
+        offset++;
         print_elements(right_bound, main.end(), block_size);
+    }
     else
         std::cout << "END";
     std::cout << std::endl;
     main.insert(b_target_pos, target_block, target_block + block_size);
+    pend.erase(target_block, target_block + block_size);
 }
 
+// void binary_insertion(vector &main, vector &pend, size_t block_size)
+// {
+//     size_t n = 3;
+//     size_t b_id = jacobsthal(n);
+//     size_t jacobs_insertion_amount = jacobsthal(n) - jacobsthal(n - 1);
+
+//     size_t inserted_count = 0;
+//     size_t total_insertions = 0;
+//     size_t total_pend_blocks = pend.size() / block_size;
+//     size_t offset = 0;
+//     int i = 1;
+//     while (total_pend_blocks > 0)
+//     {
+//         if (b_id > total_pend_blocks + 1)
+//             break;
+//         std::cout << "!!! " << total_insertions << " !!!" << std::endl;
+//         if (jacobs_insertion_amount == inserted_count)
+//         {
+//             n++;
+//             b_id = jacobsthal(n);
+//             jacobs_insertion_amount = b_id - jacobsthal(n - 1);
+//             inserted_count = 0;
+//             // if (b_id > total_pend_blocks + 1)
+//             // {
+//             //     std::cout << "####break b_id:" << b_id << " total_pend_blocks: " << total_pend_blocks << std::endl;
+//             //     break;
+//             // }
+//             if (jacobs_insertion_amount > pend.size())
+//             {
+//                 std::cout << "####break b_id:" << b_id << " total_pend_blocks: " << total_pend_blocks << std::endl;
+//                 break;
+//             }
+//             i++;
+//         }
+//         std::cout << "b_id: " << b_id << " total_pend_blocks: " << total_pend_blocks << std::endl;
+//         std::cout << "b_id: " << b_id << std::endl;
+//         std::cout << "jacobs_insertion_amount: " << jacobs_insertion_amount << std::endl;
+//         std::cout << "insertion_count: " << inserted_count << std::endl;
+//         std::cout << "total_insertions: " << total_insertions << std::endl;
+//         std::cout << "offset: " << offset << std::endl;
+
+//         insert_block(main, pend, b_id, block_size, offset);
+//         inserted_count++;
+//         b_id--;
+//         total_insertions++;
+//         total_pend_blocks--;
+//         std::cout << "pend: ";
+//         print_v(pend, block_size);
+//         std::cout << "\nmain: ";
+//         print_v(main, block_size);
+//     }
+
+//     // if (total_insertions < total_pend_blocks)
+//     // {
+
+//     //     int end_idx = total_insertions * block_size;
+//     //     pend.erase(pend.begin(), pend.begin() + end_idx);
+//     //     // reverse insert
+//     //     total_pend_blocks = pend.size() / block_size;
+//     //     while (total_pend_blocks > 0)
+//     //     {
+//     //         std::cout << "reverse" << std::endl;
+//     //         std::cout << "!!! " << total_insertions << " !!!" << std::endl;
+
+//     //         std::cout << "b_id: " << b_id << " total_pend_blocks: " << total_pend_blocks << std::endl;
+
+//     //         std::cout << "total_insertions: " << total_insertions << std::endl;
+//     //         std::cout << "jacobs_insertion_amount: " << jacobs_insertion_amount << std::endl;
+//     //         std::cout << "jacobs_block_idx: " << b_id << std::endl;
+//     //         std::cout << "total_pend_blocks: " << total_pend_blocks << std::endl;
+
+//     //         auto last_block = pend.end() - block_size;
+//     //         auto right_bound = get_right_bound(main, (b_id + offset) * block_size); // falsch (b_id + total_insertions
+//     //         auto found = bi_search(main.begin(), right_bound, *(last_block + block_size - 1), block_size);
+
+//     //         std::cout << "pend: ";
+//     //         print_v(pend, block_size);
+//     //         std::cout << "\nmain: ";
+//     //         print_v(main, block_size);
+//     //         std::cout << "target_block: ";
+//     //         print_elements(last_block, pend.end(), block_size);
+//     //         std::cout << std::endl;
+//     //         std::cout << "right bound: ";
+//     //         if (right_bound != main.end())
+//     //         {
+//     //             offset++;
+//     //             print_elements(right_bound, main.end(), block_size);
+//     //         }
+//     //         else
+//     //             std::cout << "END";
+//     //         std::cout << std::endl;
+
+//     //         main.insert(found, last_block, last_block + block_size);
+//     //         pend.erase(last_block, last_block + block_size);
+//     //         total_pend_blocks--;
+//     //         b_id--;
+//     //         total_insertions++;
+
+//     //         std::cout << "pend: ";
+//     //         print_v(pend, block_size);
+//     //         std::cout << "\nmain: ";
+//     //         print_v(main, block_size);
+//     //         std::cout << std::endl;
+//     //     }
+//     // }
+// }
 void binary_insertion(vector &main, vector &pend, size_t block_size)
 {
-    size_t n = 3;
-    size_t target_jacob = jacobsthal(n);
-    size_t jacobs_insertion_amount = jacobsthal(n) - jacobsthal(n - 1);
 
-    size_t inserted_count = 0;
-    size_t total_insertions = 0;
-    size_t total_pend_blocks = pend.size() / block_size;
+    size_t inserted_numbers = 0;
 
-    while (total_pend_blocks > total_insertions)
+    for (size_t n = 3;; n++)
     {
-        // if (target_jacob > pend.size())
-        //     break;
-        std::cout << "!!! " << total_insertions << " !!!" << std::endl;
-        std::cout << "target_jacob: " << target_jacob << " total_pend_blocks: " << total_pend_blocks << std::endl;
-        if (jacobs_insertion_amount <= inserted_count)
+        size_t b_id = jacobsthal(n);
+        size_t jacobs_insertion_amount = jacobsthal(n) - jacobsthal(n - 1);
+        int offset = 0;
+        if (b_id > pend.size())
+            break;
+        auto target = std::next(pend.begin(), jacobs_insertion_amount - 1);
+        auto right_bound = get_right_bound(main, b_id + inserted_numbers);
+        while (jacobs_insertion_amount)
         {
-            n++;
-            target_jacob = jacobsthal(n);
-            jacobs_insertion_amount = target_jacob - jacobsthal(n - 1);
-            inserted_count = 0;
-            if (target_jacob > pend.size())
-            {
-                std::cout << "####break target_jacob:" << target_jacob << " total_pend_blocks: " << total_pend_blocks << std::endl;
-                break;
-            }
-        }
-        std::cout << "jacobs_insertion_amount: " << jacobs_insertion_amount << std::endl;
-        std::cout << "insertion_count: " << inserted_count << std::endl;
-        std::cout << "target_jacob: " << target_jacob << std::endl;
-        std::cout << "total_insertions: " << total_insertions << std::endl;
-
-        insert_block(main, pend, target_jacob, block_size, total_insertions);
-        inserted_count++;
-        target_jacob--;
-        total_insertions++;
-        std::cout << "pend: ";
-        print_v(pend, block_size);
-        std::cout << "\nmain: ";
-        print_v(main, block_size);
-        std::cout << std::endl;
-    }
-
-    if (total_insertions < total_pend_blocks)
-    {
-
-        int end_idx = total_insertions * block_size;
-        pend.erase(pend.begin(), pend.begin() + end_idx);
-        // reverse insert
-        total_pend_blocks = pend.size() / block_size;
-        while (total_pend_blocks > 0)
-        {
-            std::cout << "reverse" << std::endl;
-            std::cout << "!!! " << total_insertions << " !!!" << std::endl;
-
-            std::cout << "target_jacob: " << target_jacob << " total_pend_blocks: " << total_pend_blocks << std::endl;
-
-            std::cout << "total_insertions: " << total_insertions << std::endl;
-            std::cout << "jacobs_insertion_amount: " << jacobs_insertion_amount << std::endl;
-            std::cout << "jacobs_block_idx: " << target_jacob << std::endl;
-            std::cout << "real block_idx: " << total_pend_blocks - total_insertions << std::endl;
-            std::cout << "total_pend_blocks: " << total_pend_blocks << std::endl;
-
-            auto last_block = pend.end() - block_size;
-            auto right_bound = get_right_bound(main, (target_jacob + total_insertions) * block_size); // falsch (target_jacob + total_insertions
-            auto found = bi_search(main.begin(), right_bound, *(last_block + block_size - 1), block_size);
-
-            std::cout << "pend: ";
-            print_v(pend, block_size);
-            std::cout << "\nmain: ";
-            print_v(main, block_size);
-            std::cout << "target_block: ";
-            print_elements(last_block, pend.end(), block_size);
-            std::cout << std::endl;
-            std::cout << "right bound: ";
-            if (right_bound != main.end())
-                print_elements(right_bound, main.end(), block_size);
-            else
-                std::cout << "END";
-            std::cout << std::endl;
-
-            main.insert(found, last_block, last_block + block_size);
-            pend.erase(last_block, last_block + block_size);
-            total_pend_blocks--;
-            target_jacob--;
-            total_insertions++;
-
-            std::cout << "pend: ";
-            print_v(pend, block_size);
-            std::cout << "\nmain: ";
-            print_v(main, block_size);
-            std::cout << std::endl;
+            auto b_target_pos = bi_search(main.begin(), right_bound, search_value, block_size);
         }
     }
+
+    // if (total_insertions < total_pend_blocks)
+    // {
+
+    //     int end_idx = total_insertions * block_size;
+    //     pend.erase(pend.begin(), pend.begin() + end_idx);
+    //     // reverse insert
+    //     total_pend_blocks = pend.size() / block_size;
+    //     while (total_pend_blocks > 0)
+    //     {
+    //         std::cout << "reverse" << std::endl;
+    //         std::cout << "!!! " << total_insertions << " !!!" << std::endl;
+
+    //         std::cout << "b_id: " << b_id << " total_pend_blocks: " << total_pend_blocks << std::endl;
+
+    //         std::cout << "total_insertions: " << total_insertions << std::endl;
+    //         std::cout << "jacobs_insertion_amount: " << jacobs_insertion_amount << std::endl;
+    //         std::cout << "jacobs_block_idx: " << b_id << std::endl;
+    //         std::cout << "total_pend_blocks: " << total_pend_blocks << std::endl;
+
+    //         auto last_block = pend.end() - block_size;
+    //         auto right_bound = get_right_bound(main, (b_id + offset) * block_size); // falsch (b_id + total_insertions
+    //         auto found = bi_search(main.begin(), right_bound, *(last_block + block_size - 1), block_size);
+
+    //         std::cout << "pend: ";
+    //         print_v(pend, block_size);
+    //         std::cout << "\nmain: ";
+    //         print_v(main, block_size);
+    //         std::cout << "target_block: ";
+    //         print_elements(last_block, pend.end(), block_size);
+    //         std::cout << std::endl;
+    //         std::cout << "right bound: ";
+    //         if (right_bound != main.end())
+    //         {
+    //             offset++;
+    //             print_elements(right_bound, main.end(), block_size);
+    //         }
+    //         else
+    //             std::cout << "END";
+    //         std::cout << std::endl;
+
+    //         main.insert(found, last_block, last_block + block_size);
+    //         pend.erase(last_block, last_block + block_size);
+    //         total_pend_blocks--;
+    //         b_id--;
+    //         total_insertions++;
+
+    //         std::cout << "pend: ";
+    //         print_v(pend, block_size);
+    //         std::cout << "\nmain: ";
+    //         print_v(main, block_size);
+    //         std::cout << std::endl;
+    //     }
+    // }
 }
 
 void insert_rest(const vector &vec, vector &main)
@@ -267,10 +352,10 @@ void sort_pairs(vector &vec, int depth)
     std::cout << "Before binary!" << std::endl;
     std::cout << "vec :";
     print_v(vec, block_size);
-    std::cout << "main :";
-    print_v(main, block_size);
-    std::cout << "pend :";
+    std::cout << "pend: ";
     print_v(pend, block_size);
+    std::cout << "\nmain: ";
+    print_v(main, block_size);
 
     if (!pend.empty())
         binary_insertion(main, pend, block_size);
@@ -282,6 +367,6 @@ void sort_pairs(vector &vec, int depth)
     print_v(main, block_size);
     std::cout << "pend :";
     print_v(pend, block_size);
-    vec = std::move(main);
+    vec = std::move(main); // TODO: check perfomance
     std::cout << std::endl;
 }

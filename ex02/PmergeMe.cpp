@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/15 14:19:13 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/24 11:04:07 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void PmergeMe::print_list()
     std::cout << std::endl;
 }
 
-// void PmergeMe::sort()
-// {
-//     step1(_vec, 1);
-// }
+void PmergeMe::sort()
+{
+    sort_pairs(_vec, 1);
+}

@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 15:31:22 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/23 14:16:02 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/24 13:43:02 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,19 @@ int main(int argc, char **argv)
     // try
     // {
     //     PmergeMe pm(argv + 1);
-    //     pm.print_vector();
+    //     std::cout << "before: " << std::endl;
+    //     print_v(pm._vec, pm._vec.size());
     //     pm.sort();
+    //     std::cout << "after: " << std::endl;
+    //     if (std::is_sorted(pm._vec.begin(), pm._vec.end()))
+    //     {
+    //         std::cout << "sorted !" << std::endl;
+    //     }
+    //     else
+    //     {
+    //         std::cout << " not sorted !" << std::endl;
+    //     }
+    //     print_v(pm._vec, pm._vec.size());
     // }
     // catch (const std::exception &e)
     // {

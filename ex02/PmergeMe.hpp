@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/22 13:01:29 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/24 11:05:55 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 class PmergeMe
 {
-private:
+public: // TODO: change to private
     std::vector<size_t> _vec;
     std::list<size_t> _list;
 
