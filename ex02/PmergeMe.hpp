@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:14:59 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/24 11:05:55 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/28 13:25:31 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ public:
 
 using vector = std::vector<size_t>;
 
-void print_elements(vector::const_iterator it, vector::const_iterator end, size_t element_size);
-void print_v(const vector &vec, size_t element_size);
-size_t jacobsthal(size_t n);
-vector::iterator bi_search(vector::iterator first, vector::iterator last, size_t target, size_t element_size);
-void binary_insertion(vector &main_chain, vector &pend, size_t element_size);
-void sort_pairs(vector &vec, int depth);
+void print_elements(vector::iterator it, vector::iterator end, size_t element_size);
+void print_v(vector &vec, size_t block_size);
+
+void ford_johnson(vector &container, int depth);
