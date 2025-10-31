@@ -1,10 +1,11 @@
 NAME = PmergeMe
 CXX = c++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
+# CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
+CXXFLAGS = -std=c++17 -I./inc
 
 VPATH = ./src
 
-SRCS = main.cpp PmergeMe.cpp utils.cpp algo_vector.cpp algo_deq.cpp
+SRCS = main.cpp PmergeMe.cpp utils.cpp algo_vector.cpp algo_deque.cpp
 OBJS_DIR = objects
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 

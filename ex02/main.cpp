@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 15:31:22 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/28 15:24:52 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/10/30 13:36:02 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     {
         PmergeMe pm(argv + 1);
         pm.sort_vector();
-        pm.sort_deq();
+        pm.sort_deque();
     }
     catch (const std::exception &e)
     {
