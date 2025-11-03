@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 15:31:22 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/30 13:36:02 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:44:07 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <iostream>
 #include <stdexcept>
 #include "PmergeMe.hpp"
+
+int deque_count = 0;
 
 int main(int argc, char **argv)
 {
@@ -26,6 +28,7 @@ int main(int argc, char **argv)
     {
         PmergeMe pm(argv + 1);
         pm.sort_vector();
+        std::cout << std::endl;
         pm.sort_deque();
     }
     catch (const std::exception &e)

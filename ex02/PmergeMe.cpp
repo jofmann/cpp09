@@ -6,7 +6,7 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:49:40 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/31 20:08:17 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:47:31 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,16 @@ PmergeMe::~PmergeMe()
 {
 }
 
-vector PmergeMe::get_vector()
+vector PmergeMe::get_vector() const
 {
     return _vec;
 }
-deque PmergeMe::get_deque()
+deque PmergeMe::get_deque() const
 {
     return _deque;
 }
 
-void PmergeMe::print_vector(size_t limit)
+void PmergeMe::print_vector(size_t limit) const
 {
     for (auto it = _vec.begin(); it != _vec.end(); it++)
     {
@@ -124,7 +124,8 @@ void PmergeMe::print_vector(size_t limit)
     }
     std::cout << std::endl;
 }
-void PmergeMe::print_deque(size_t limit)
+
+void PmergeMe::print_deque(size_t limit) const
 {
     for (auto it = _deque.begin(); it != _deque.end(); it++)
     {

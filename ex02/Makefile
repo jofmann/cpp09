@@ -1,7 +1,6 @@
 NAME = PmergeMe
 CXX = c++
-# CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
-CXXFLAGS = -std=c++17 -I./inc
+CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I./inc
 
 VPATH = ./src
 

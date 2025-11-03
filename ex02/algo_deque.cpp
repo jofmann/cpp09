@@ -6,14 +6,13 @@
 /*   By: phhofman <phhofman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 15:19:25 by phhofman          #+#    #+#             */
-/*   Updated: 2025/10/31 20:09:02 by phhofman         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:39:53 by phhofman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 #include "utils.hpp"
-
-void init_main_pend(deque &main, deque &pend, deque &container, int block_size, int total_blocks)
+void init_main_pend(deque &main, deque &pend, deque &container, const size_t block_size, const size_t total_blocks)
 {
     // first two insertion (b1, a1) into main
     auto start = container.begin();
@@ -34,7 +33,7 @@ void init_main_pend(deque &main, deque &pend, deque &container, int block_size, 
     }
 }
 
-int search(const deque &main, int left, int right, size_t target_value, size_t block_size)
+int binary_idx_search(const deque &main, int left, int right, const size_t target_value, const size_t block_size)
 {
     while (left < right)
     {
@@ -49,28 +48,28 @@ int search(const deque &main, int left, int right, size_t target_value, size_t b
     return left;
 }
 
-void binary_insertion(deque &main, deque &pend, size_t block_size)
+void binary_insertion(deque &main, deque &pend, const size_t block_size)
 {
-    int total_blocks_pend = pend.size() / block_size;
-    int inserted_blocks = 0;
+    size_t total_blocks_pend = pend.size() / block_size;
+    size_t inserted_blocks = 0;
 
-    for (int n = 3;; n++)
+    for (size_t n = 3;; n++)
     {
-        int pend_id = jacobsthal(n);
-        int diff = jacobsthal(n) - jacobsthal(n - 1);
+        size_t pend_id = jacobsthal(n);
+        size_t diff = jacobsthal(n) - jacobsthal(n - 1);
         if (diff <= 0 || diff > total_blocks_pend - inserted_blocks)
             break;
 
         int offset = 0;
-        for (int i = 0; i < diff; i++)
+        for (size_t i = 0; i < diff; i++)
         {
             int target_block_idx = (inserted_blocks + diff - 1 - i) * block_size;
             int right_bound_block_idx = std::min((pend_id + inserted_blocks - offset) * block_size, main.size());
 
-            int found = search(main, 0, right_bound_block_idx, pend[target_block_idx + block_size - 1], block_size);
-            main.insert(main.begin() + found, pend.begin() + target_block_idx, pend.begin() + target_block_idx + block_size);
+            int found_idx = binary_idx_search(main, 0, right_bound_block_idx, pend[target_block_idx + block_size - 1], block_size);
+            main.insert(main.begin() + found_idx, pend.begin() + target_block_idx, pend.begin() + target_block_idx + block_size);
 
-            if ((found / block_size) == (pend_id + inserted_blocks))
+            if ((found_idx / block_size) == (pend_id + inserted_blocks))
                 offset++;
         }
         inserted_blocks += diff;
@@ -82,27 +81,27 @@ void binary_insertion(deque &main, deque &pend, size_t block_size)
         int target_block_idx = (inserted_blocks + i) * block_size;
         int right_bound_block_idx = main.size();
 
-        int found = search(main, 0, right_bound_block_idx, pend[target_block_idx + block_size - 1], block_size);
+        int found_idx = binary_idx_search(main, 0, right_bound_block_idx, pend[target_block_idx + block_size - 1], block_size);
 
-        main.insert(main.begin() + found, pend.begin() + target_block_idx, pend.begin() + target_block_idx + block_size);
+        main.insert(main.begin() + found_idx, pend.begin() + target_block_idx, pend.begin() + target_block_idx + block_size);
     }
 }
 
-void sort_blocks(deque &container, int block_size)
+void sort_blocks(deque &container, const size_t block_size)
 {
-    int pairs = container.size() / block_size - ((container.size() / block_size) % 2);
-    auto end = container.begin() + pairs * block_size;
+    size_t pairs = container.size() / block_size - ((container.size() / block_size) % 2);
+    size_t end = pairs * block_size;
 
-    for (auto it = container.begin(); it != end; std::advance(it, block_size * 2))
+    for (size_t i = 0; i < end; i += block_size * 2)
     {
-        auto left_block_last = std::next(it, block_size - 1);
-        auto right_block_last = std::next(it, block_size * 2 - 1);
+        size_t left_block_last = i + block_size - 1;
+        size_t right_block_last = i + block_size * 2 - 1;
 
-        if (*right_block_last < *left_block_last)
+        if (container[right_block_last] < container[left_block_last])
         {
-            for (int i = block_size - 1; i >= 0; i--)
+            for (size_t j = 0; j < block_size; j++)
             {
-                std::iter_swap(left_block_last - i, right_block_last - i);
+                std::swap(container[i + j], container[i + block_size + j]);
             }
         }
     }
@@ -118,9 +117,9 @@ void insert_rest(deque &container, deque &main)
 
 void ford_johnson(deque &container, int depth)
 {
-    const int block_size = static_cast<int>(std::pow(2, depth - 1));
+    const size_t block_size = static_cast<size_t>(std::pow(2, depth - 1));
 
-    int total_blocks = container.size() / block_size;
+    const size_t total_blocks = container.size() / block_size;
     if (total_blocks < 2)
         return;
 
@@ -128,13 +127,14 @@ void ford_johnson(deque &container, int depth)
     ford_johnson(container, depth + 1);
 
     deque main, pend;
+
     init_main_pend(main, pend, container, block_size, total_blocks);
 
-    bool is_odd = total_blocks % 2 == 1;
     if (!pend.empty())
         binary_insertion(main, pend, block_size);
 
     if (container.size() > main.size())
         insert_rest(container, main);
-    container = main;
+
+    container = std::move(main);
 }
